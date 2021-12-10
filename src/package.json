@@ -1,0 +1,52 @@
+{
+  "name": "icnaming-browser-extensions",
+  "version": "1.0.0",
+  "description": "icnaming-browser-extensions",
+  "main": "index.js",
+  "scripts": {
+    "watch": "webpack --config webpack/webpack.dev.js --watch",
+    "build": "webpack --config webpack/webpack.prod.js",
+    "build_test": "webpack --config webpack/webpack.test.js",
+    "clean": "rimraf dist",
+    "test": "npx jest",
+    "style": "prettier --write \"src/**/*.{ts,tsx}\""
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IC-Naming/icnaming-browser-extensions"
+  },
+  "dependencies": {
+    "@dfinity/agent": "^0.10.1",
+    "@dfinity/auth-client": "^0.10.1",
+    "@dfinity/authentication": "^0.10.1",
+    "@dfinity/candid": "^0.10.1",
+    "@dfinity/identity": "^0.10.1",
+    "@dfinity/principal": "^0.10.1",
+    "buffer-crc32": "^0.2.13",
+    "crc": "^3.8.0",
+    "dotenv": "^10.0.0",
+    "dotenv-webpack": "^7.0.3",
+    "js-sha256": "0.9.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.168",
+    "@types/jest": "27.0.2",
+    "@types/react": "17.0.37",
+    "@types/react-dom": "17.0.11",
+    "copy-webpack-plugin": "9.1.0",
+    "glob": "7.2.0",
+    "jest": "27.4.3",
+    "prettier": "2.4.1",
+    "rimraf": "3.0.2",
+    "ts-jest": "27.0.5",
+    "ts-loader": "8.3.0",
+    "typescript": "4.4.3",
+    "webpack": "5.53.0",
+    "webpack-cli": "4.8.0",
+    "webpack-merge": "5.8.0"
+  }
+}

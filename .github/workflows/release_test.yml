@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - publish_test
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install pipenv
+        run: pipx install pipenv
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          cache: 'pipenv'
+          architecture: 'x64'
+      - name: run package all
+        run: |
+          cd src
+          pipenv install
+          pipenv run invoke pack-all --version 1.0dev
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: |
+            src/packages/
