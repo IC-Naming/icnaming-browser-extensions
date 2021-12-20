@@ -1,0 +1,14 @@
+@import "https://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css";
+
+html,body{margin:0;}
+.setNetwork{height:200px;display:flex;justify-content:center;align-items:center;background:#050d21 linear-gradient(125deg,#062c6a,#050d21 22%,#050d21) no-repeat fixed;}
+.select{position:relative;display:block;margin:0 auto;width:100%;max-width:225px;color:#cccccc;
+  vertical-align:middle;text-align:left;user-select:none;-webkit-touch-callout:none;}
+.select .placeholder{position:relative;display:block;background:linear-gradient(180deg,#334773,#1c2a4a);z-index:1;padding:1em;border-radius:2px;cursor:pointer;}
+.select .placeholder:hover{background:linear-gradient(180deg,#1c2a4a,#334773);}
+.select .placeholder:after{position:absolute;right:1em;top:50%;transform:translateY(-50%);font-family:'FontAwesome';content:'\f078';z-index:10;}
+.select.is-open .placeholder:after{content:'\f077';}
+.select.is-open ul{display:block;}
+.select ul{position:absolute;overflow:hidden;width:100%;background:#334773;border-radius:2px;top:100%;left:0;list-style:none;margin:5px 0 0 0;padding:0;z-index:100;}
+.select ul li{display:block;text-align:left;padding:0.8em 1em 0.8em 1em;color:#00cfbb;cursor:pointer;}
+.select ul li:hover{background:#4ebbf0;color:#fff;}
