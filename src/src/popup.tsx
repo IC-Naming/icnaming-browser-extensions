@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-
+import "./skin/popup.css";
 const Popup = () => {
   const [count, setCount] = useState(0);
   const [currentURL, setCurrentURL] = useState<string>();
 
-  useEffect(() => {
+  /* useEffect(() => {
     chrome.action.setBadgeText({ text: count.toString() });
-  }, [count]);
+  }, [count]); */
 
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -33,14 +33,32 @@ const Popup = () => {
   };
 
   chrome.runtime.getBackgroundPage(function (backgroundPage) {
-    if (backgroundPage){
+    if (backgroundPage) {
       backgroundPage.blur();
     }
   });
 
+  const [network, setNetwork] = useState<string>('Main network');
+  const [networkList, setNetworkList] = useState<boolean>(false);
+  const changeNetwork = (e) => {
+    setNetwork(e.target.innerText)
+  }
   return (
     <>
-      <ul style={{ minWidth: "700px" }}>
+      <div className="setNetwork">
+        <div className="select" onClick={() => { setNetworkList(!networkList);console.log('ss') }}>
+          <span className="placeholder">{network}</span>
+          {
+            networkList &&
+            <ul>
+              <li onClick={(e) => { changeNetwork(e)}}>Main network</li>
+              <li onClick={(e) => { changeNetwork(e)}}>Test network</li>
+            </ul>
+          }
+
+        </div>
+      </div>
+      <ul style={{ minWidth: "300px" }}>
         <li>Current URL: {currentURL}</li>
         <li>Current Time: {new Date().toLocaleTimeString()}</li>
       </ul>
