@@ -3,20 +3,21 @@ import {
   createRegistrarQueryActor,
   PagingArgs,
   RegistrarActor,
-  Registration,
+  Registration
 } from "./canisters/registrar";
 import {
   createRegistryQueryActor,
-  RegistryActor,
+  RegistryActor
 } from "./canisters/registry";
 import {
   createResolverQueryActor,
   createResolverQueryActorById,
-  ResolverActor,
+  ResolverActor
 } from "./canisters/resolver";
 import { executeWithLogging } from "./errorLogger";
 import { RegistrationDetails } from "./canisters/registrar/interface";
 import { RegistryDto } from "./canisters/registry/interface";
+
 export interface NameDetails {
   name: string;
   available: boolean;
@@ -25,15 +26,10 @@ export interface NameDetails {
   resolver: Principal;
   expireAt: Date;
 }
+
 export default class ServiceApi {
-  private readonly registrarQueryActor: RegistrarActor;
-  private readonly registryQueryActor: RegistryActor;
-  private readonly resolverQueryActor: ResolverActor;
 
   public constructor() {
-    this.registrarQueryActor = createRegistrarQueryActor();
-    this.registryQueryActor = createRegistryQueryActor();
-    this.resolverQueryActor = createResolverQueryActor();
   }
 
   /* Registrar */
@@ -43,7 +39,7 @@ export default class ServiceApi {
     // if word is string and not empty
     if (word.length > 0) {
       return executeWithLogging(async () => {
-        const res: any = await this.registrarQueryActor.available(`${word}`);
+        const res: any = await createRegistrarQueryActor().available(`${word}`);
         // if res is ErrorInfo
 
         if (res.Ok) {
@@ -59,7 +55,7 @@ export default class ServiceApi {
   // get name expires
   public expireAtOf = (name: string): Promise<number> => {
     return executeWithLogging(async () => {
-      const res: any = await this.registrarQueryActor.get_name_expires(name);
+      const res: any = await createRegistrarQueryActor().get_name_expires(name);
       if (res.Ok) {
         return Number(res.Ok);
       } else {
@@ -74,10 +70,10 @@ export default class ServiceApi {
   ): Promise<Array<Registration>> => {
     const pagingArgs: PagingArgs = {
       offset: BigInt(0),
-      limit: BigInt(100),
+      limit: BigInt(100)
     };
     return executeWithLogging(async () => {
-      const res: any = await this.registrarQueryActor.get_names(
+      const res: any = await createRegistrarQueryActor().get_names(
         address,
         pagingArgs
       );
@@ -95,10 +91,10 @@ export default class ServiceApi {
   ): Promise<Array<Registration>> => {
     const pagingArgs: PagingArgs = {
       offset: BigInt(0),
-      limit: BigInt(100),
+      limit: BigInt(100)
     };
     return executeWithLogging(async () => {
-      const res: any = await this.registryQueryActor.get_controlled_names(
+      const res: any = await createRegistryQueryActor().get_controlled_names(
         address,
         pagingArgs
       );
@@ -114,7 +110,7 @@ export default class ServiceApi {
   // get name's registrant
   public getRegistrantOfName = (name: string): Promise<Principal> => {
     return executeWithLogging(async () => {
-      const res: any = await this.registrarQueryActor.get_owner(name);
+      const res: any = await createRegistrarQueryActor().get_owner(name);
       if (res.Ok) {
         return res.Ok;
       } else {
@@ -127,7 +123,7 @@ export default class ServiceApi {
   // get name's controller
   public getControllerOfName = (name: string): Promise<Principal> => {
     return executeWithLogging(async () => {
-      const res: any = await this.registryQueryActor.get_owner(name);
+      const res: any = await createRegistryQueryActor().get_owner(name);
       if (res.Ok) {
         return res.Ok;
       } else {
@@ -140,7 +136,7 @@ export default class ServiceApi {
   // get name's resolver
   public getResolverOfName = (name: string): Promise<Principal> => {
     return executeWithLogging(async () => {
-      const res: any = await this.registryQueryActor.get_resolver(name);
+      const res: any = await createRegistryQueryActor().get_resolver(name);
       if (res.Ok) {
         return res.Ok;
       } else {
@@ -155,7 +151,7 @@ export default class ServiceApi {
     name: string
   ): Promise<RegistrationDetails> => {
     return executeWithLogging(async () => {
-      const res: any = await this.registrarQueryActor.get_details(name);
+      const res: any = await createRegistrarQueryActor().get_details(name);
       if (res.Ok) {
         return res.Ok;
       } else {
@@ -183,7 +179,7 @@ export default class ServiceApi {
   // get details of name  registry
   public getRegistryDetailsOfName = (name: string): Promise<RegistryDto> => {
     return executeWithLogging(async () => {
-      const res: any = await this.registryQueryActor.get_details(name);
+      const res: any = await createRegistryQueryActor().get_details(name);
       if (res.Ok) {
         return res.Ok;
       } else {

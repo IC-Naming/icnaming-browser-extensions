@@ -7,7 +7,7 @@
     "page": "background.html",
     "persistent": true
   },
-"browser_action": {
+  "browser_action": {
     "default_popup": "popup.html"
   },
   "icons": {
@@ -16,6 +16,7 @@
     "128": "icon.png"
   },
   "permissions": [
+    "storage",
     "webRequest",
     "webRequestBlocking",
     "*://*.icp/*"

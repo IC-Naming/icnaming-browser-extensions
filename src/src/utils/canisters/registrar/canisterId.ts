@@ -1,6 +1,7 @@
 import { Principal } from "@dfinity/principal";
 import { isLocalEnv, isMainNetEnv, isTestNetEnv } from "../../config";
-const getRegistrarId = (): Principal => {
+
+export const getRegistrarId = (): Principal => {
   if (isLocalEnv()) {
     return Principal.fromText("rrkah-fqaaa-aaaaa-aaaaq-cai");
   }
@@ -12,4 +13,3 @@ const getRegistrarId = (): Principal => {
   }
   throw new Error("Unknown environment");
 };
-export const REGISTRAR_ID = getRegistrarId();

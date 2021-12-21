@@ -1,7 +1,7 @@
 @import "https://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css";
 
 html,body{margin:0;}
-.setNetwork{height:200px;display:flex;justify-content:center;align-items:center;background:#050d21 linear-gradient(125deg,#062c6a,#050d21 22%,#050d21) no-repeat fixed;}
+.setNetwork{height:200px;min-width:300px;display:flex;justify-content:center;align-items:center;background:#050d21 linear-gradient(125deg,#062c6a,#050d21 22%,#050d21) no-repeat fixed;}
 .select{position:relative;display:block;margin:0 auto;width:100%;max-width:225px;color:#cccccc;
   vertical-align:middle;text-align:left;user-select:none;-webkit-touch-callout:none;}
 .select .placeholder{position:relative;display:block;background:linear-gradient(180deg,#334773,#1c2a4a);z-index:1;padding:1em;border-radius:2px;cursor:pointer;}
