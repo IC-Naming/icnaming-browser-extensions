@@ -1,11 +1,19 @@
-import ServiceApi from './utils/ServiceApi';
+import ServiceApi from "./utils/ServiceApi";
 
-const canister_id_key = 'canister.icp';
+const canister_id_key = "canister.icp";
 const rule_id_start = 1000;
 let current_rule_id = rule_id_start;
 let rules = {};
 
-console.info('Background script loaded, current env: ' + process.env.EXTENSION_ENV);
+console.info("Background script loaded, current env: " + process.env.EXTENSION_ENV);
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  if (namespace == "local" && changes.extension_env) {
+    rules = {};
+    current_rule_id = rule_id_start;
+    console.info("Extension env changed to " + changes.extension_env.newValue);
+  }
+});
 
 let get_redirect_host = async (name: string): Promise<string> => {
   let serviceApi = new ServiceApi();
@@ -20,34 +28,34 @@ let get_redirect_host = async (name: string): Promise<string> => {
       }
     }
   }
-  return '';
-}
+  return "";
+};
 
 let save_rule = async (name: string, redirect_host: string): Promise<string> => {
   let result = rules;
   if (result[name]) {
     let cache = result[name];
-    cache['redirect_host'] = redirect_host;
+    cache["redirect_host"] = redirect_host;
   } else {
     let id = current_rule_id++;
     result[name] = {
-      'redirect_host': redirect_host,
-      'rule_id': id
+      "redirect_host": redirect_host,
+      "rule_id": id
     };
 
     console.log(`Rule ${id} created for ${name}`);
   }
   return redirect_host;
-}
+};
 
 let get_rule_host = (name: string): string => {
   let result = rules;
   if (result[name]) {
     let cache = result[name];
-    return cache['redirect_host'];
+    return cache["redirect_host"];
   }
-  return '';
-}
+  return "";
+};
 
 let upsert_redirect_url = async (name: string): Promise<string> => {
   let redirect_host = get_rule_host(name);
@@ -63,7 +71,7 @@ let upsert_redirect_url = async (name: string): Promise<string> => {
     console.log(`saved ${name} has a redirect host from resolver: ${redirect_host}`);
   }
   return redirect_host;
-}
+};
 
 function sleep(delay) {
   for (let t = Date.now(); Date.now() - t <= delay;) {
@@ -72,9 +80,9 @@ function sleep(delay) {
 }
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
-  console.log('onBeforeRequest', details);
+  console.log("onBeforeRequest", details);
   let hostname = new URL(details.url).hostname;
-  console.log('onBeforeRequest', hostname);
+  console.log("onBeforeRequest", hostname);
   if (hostname.endsWith(".icp")) {
     let max_retry = 3;
     let update_request_sent = false;

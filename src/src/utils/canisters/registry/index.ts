@@ -1,17 +1,18 @@
 import { actorFactory } from "../actorFactory";
 import { _SERVICE } from "./interface";
 import { idlFactory } from "./did";
-import { REGISTRY_ID } from "./canisterId";
+import { getRegistryId } from "./canisterId";
+
 export type RegistryActor = _SERVICE;
 
 export const createRegistryQueryActor = () =>
   actorFactory.createActorWithAnonymousIdentity<RegistryActor>(
     idlFactory,
-    REGISTRY_ID
+    getRegistryId()
   );
 
 export const createRegistryUpdateActor = () =>
   actorFactory.createActor<RegistryActor>(
     idlFactory,
-    REGISTRY_ID
+    getRegistryId()
   );
