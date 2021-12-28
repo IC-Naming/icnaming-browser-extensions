@@ -89,9 +89,12 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
     for (let i = 0; i < max_retry; i++) {
       let redirect_host = get_rule_host(hostname);
       if (redirect_host) {
-        return {
-          redirectUrl: `https://${redirect_host}`
-        };
+        // replace the hostname with the redirect host
+        // and update schema to https
+        let redirect_url = new URL(details.url);
+        redirect_url.hostname = redirect_host;
+        redirect_url.protocol = "https:";
+        return { redirectUrl: redirect_url.toString() };
       } else {
         if (!update_request_sent) {
           update_request_sent = true;
@@ -101,8 +104,9 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
       }
       sleep(1000);
     }
+    // redirect to original url
     return {
-      redirectUrl: `https://${hostname}`
+      redirectUrl: details.url
     };
   }
 }, {
