@@ -1,9 +1,12 @@
 from invoke import task
+import shutil;
+import os;
 
 @task
 def install(ctx):
-    ctx.run("rm -rf build")
-    ctx.run("rm -rf dist")
+    # remove files in build directory with py lib
+    shutil.rmtree('build', ignore_errors=True)
+    shutil.rmtree('dist', ignore_errors=True)
     ctx.run("npm install")
 
 @task(install)
@@ -11,20 +14,20 @@ def pack_test(ctx, version="0.1"):
     # run npm run build_test
     ctx.run("npm run build_test")
     # create a packages dir skip if exists
-    if not ctx.run("test -d packages", warn=True).ok:
-        ctx.run("mkdir packages")
-    # create a zip from dist named icnaming-browser-extension-{version}-test.zip
-    ctx.run(f"zip -r packages/icnaming-browser-extension-{version}-test.zip dist/")
+    if not os.path.exists("packages"):
+        os.makedirs("packages")
+    # create a zip from dist named icnaming-browser-extension-{version}-test.zip by python lib
+    shutil.make_archive("packages/icnaming-browser-extension-{version}-test".format(version=version), "zip", "dist")
 
 @task(install)
 def pack_prod(ctx, version="0.1"):
     # run npm run build_prod
     ctx.run("npm run build")
     # create a packages dir skip if exists
-    if not ctx.run("test -d packages", warn=True).ok:
-        ctx.run("mkdir packages")
+    if not os.path.exists("packages"):
+        os.makedirs("packages")
     # create a zip from dist named icnaming-browser-extension-{version}.zip
-    ctx.run(f"zip -r packages/icnaming-browser-extension-{version}.zip dist/")
+    shutil.make_archive("packages/icnaming-browser-extension-{version}".format(version=version), "zip", "dist")
 
 
 @task(pre=[install])
