@@ -37,6 +37,19 @@ const load_env = () => {
 
 load_env();
 
+const get_env = (callback: (env: string) => void): void => {
+  chrome.storage.local.get("extension_env"
+    , (result) => {
+      if (result.extension_env) {
+        console.log("env is " + result.extension_env);
+        env = result.extension_env;
+      } else {
+        env = "MainNet";
+      }
+      callback(env);
+    });
+};
+
 const IC_HOST = isLocalEnv() ? IC_LOCAL_HOST : IC_MAINNET_HOST;
-export { IC_HOST, isLocalEnv, isTestNetEnv, isMainNetEnv, set_env };
+export { IC_HOST, isLocalEnv, isTestNetEnv, isMainNetEnv, set_env, get_env };
 

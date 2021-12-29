@@ -68,4 +68,3 @@ jobs:
           tagName: "v${{ steps.gitversion.outputs.MajorMinorPatch }}"
           assets: |
             src/packages/icnaming-browser-extension-${{ steps.gitversion.outputs.MajorMinorPatch }}.zip
-            src/packages/icnaming-browser-extension-${{ steps.gitversion.outputs.MajorMinorPatch }}-test.zip

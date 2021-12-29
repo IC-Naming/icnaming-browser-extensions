@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { set_env } from "./utils/config";
+import { set_env, get_env } from "./utils/config";
 import "./skin/popup.css";
 
 const Popup = () => {
@@ -12,6 +12,12 @@ const Popup = () => {
     let env = e.target.innerText === "Main network" ? "MainNet" : "TestNet";
     set_env(env);
   };
+
+
+  get_env(env=>{
+    setNetwork(env === "MainNet" ? "Main network" : "Test network");
+  });
+
   return (
     <>
       <div className="setNetwork">
