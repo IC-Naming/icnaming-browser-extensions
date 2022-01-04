@@ -1,6 +1,5 @@
-import ServiceApi from "./utils/ServiceApi";
+import { get_redirect_host } from "./utils/ic_naming";
 
-const canister_id_key = "canister.icp";
 const rule_id_start = 1000;
 let current_rule_id = rule_id_start;
 let rules = {};
@@ -15,21 +14,6 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
   }
 });
 
-let get_redirect_host = async (name: string): Promise<string> => {
-  let serviceApi = new ServiceApi();
-  let resolver = await serviceApi.getResolverOfName(name);
-  if (resolver) {
-    let values = await serviceApi.getRecordsOfName(name, resolver);
-    if (values) {
-      console.log(values);
-      let redirect_url = values.find((value) => value[0] === canister_id_key);
-      if (redirect_url) {
-        return `${redirect_url[1]}.raw.ic0.app`;
-      }
-    }
-  }
-  return "";
-};
 
 let save_rule = async (name: string, redirect_host: string): Promise<string> => {
   let result = rules;
@@ -73,41 +57,28 @@ let upsert_redirect_url = async (name: string): Promise<string> => {
   return redirect_host;
 };
 
-function sleep(delay) {
-  for (let t = Date.now(); Date.now() - t <= delay;) {
-    // nothing
-  }
-}
-
 chrome.webRequest.onBeforeRequest.addListener(details => {
   console.log("onBeforeRequest", details);
   let hostname = new URL(details.url).hostname;
   console.log("onBeforeRequest", hostname);
   if (hostname.endsWith(".icp")) {
-    let max_retry = 3;
-    let update_request_sent = false;
-    for (let i = 0; i < max_retry; i++) {
-      let redirect_host = get_rule_host(hostname);
-      if (redirect_host) {
-        // replace the hostname with the redirect host
-        // and update schema to https
-        let redirect_url = new URL(details.url);
-        redirect_url.hostname = redirect_host;
-        redirect_url.protocol = "https:";
-        return { redirectUrl: redirect_url.toString() };
-      } else {
-        if (!update_request_sent) {
-          update_request_sent = true;
-          console.log(`${hostname} does not have a redirect host, update request sent`);
-          upsert_redirect_url(hostname);
-        }
-      }
-      sleep(1000);
+    let redirect_host = get_rule_host(hostname);
+    if (redirect_host) {
+      // replace the hostname with the redirect host
+      // and update schema to https
+      let redirect_url = new URL(details.url);
+      redirect_url.hostname = redirect_host;
+      redirect_url.protocol = "https:";
+      return { redirectUrl: redirect_url.toString() };
+    } else {
+      upsert_redirect_url(hostname);
+      // redirect to redirect.html with query string
+
+      // get redirect.html url from extensions
+      let redirect_url_base = chrome.runtime.getURL("redirect.html");
+      let url = `${redirect_url_base}?source=${encodeURIComponent(details.url)}`;
+      return { redirectUrl: url };
     }
-    // redirect to original url
-    return {
-      redirectUrl: details.url
-    };
   }
 }, {
   urls: ["*://*.icp/*"]
