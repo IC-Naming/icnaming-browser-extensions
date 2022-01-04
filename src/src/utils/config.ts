@@ -17,6 +17,15 @@ const set_env = (env: string) => {
   });
 };
 
+const load_env_with_call = (callback: (env: string) => void) => {
+  chrome.storage.local.get("extension_env", (result) => {
+    if (result.extension_env) {
+      env = result.extension_env;
+    }
+    callback(env);
+  });
+};
+
 const load_env = () => {
   chrome.storage.local.get("extension_env", (result) => {
     if (result.extension_env) {
@@ -51,5 +60,5 @@ const get_env = (callback: (env: string) => void): void => {
 };
 
 const IC_HOST = isLocalEnv() ? IC_LOCAL_HOST : IC_MAINNET_HOST;
-export { IC_HOST, isLocalEnv, isTestNetEnv, isMainNetEnv, set_env, get_env };
+export { IC_HOST, isLocalEnv, isTestNetEnv, isMainNetEnv, set_env, get_env, load_env_with_call };
 
