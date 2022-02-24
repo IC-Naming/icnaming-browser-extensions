@@ -32,7 +32,7 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.168",
+    "@types/chrome": "0.0.179",
     "@types/jest": "27.0.2",
     "@types/react": "17.0.37",
     "@types/react-dom": "17.0.11",
