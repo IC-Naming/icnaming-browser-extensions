@@ -1,18 +1,13 @@
 import { actorFactory } from "../actorFactory";
 import { _SERVICE } from "./interface";
 import { idlFactory } from "./did";
-import { getRegistryId } from "./canisterId";
+import { Principal } from "@dfinity/principal";
 
 export type RegistryActor = _SERVICE;
 
-export const createRegistryQueryActor = () =>
+export const createRegistryQueryActor = (registrarId: Principal) =>
   actorFactory.createActorWithAnonymousIdentity<RegistryActor>(
     idlFactory,
-    getRegistryId()
+    registrarId
   );
 
-export const createRegistryUpdateActor = () =>
-  actorFactory.createActor<RegistryActor>(
-    idlFactory,
-    getRegistryId()
-  );

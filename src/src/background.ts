@@ -1,22 +1,18 @@
-import { get_redirect_host } from "./utils/ic_naming";
+import { get_redirect_host, NameEnv } from "./utils/ic_naming";
 
 const rule_id_start = 1000;
 let current_rule_id = rule_id_start;
-let rules = {};
-
-console.info("Background script loaded, current env: " + process.env.EXTENSION_ENV);
-
-chrome.storage.onChanged.addListener(function(changes, namespace) {
-  if (namespace == "local" && changes.extension_env) {
-    rules = {};
-    current_rule_id = rule_id_start;
-    console.info("Extension env changed to " + changes.extension_env.newValue);
+let env_rules = {};
+let get_env_rules = (name_env: NameEnv) => {
+  if (!env_rules[name_env]) {
+    env_rules[name_env] = {};
   }
-});
+  return env_rules[name_env];
+};
 
 
-let save_rule = async (name: string, redirect_host: string): Promise<string> => {
-  let result = rules;
+let save_rule = async (name: string, redirect_host: string, name_env: NameEnv): Promise<string> => {
+  let result = get_env_rules(name_env);
   if (result[name]) {
     let cache = result[name];
     cache["redirect_host"] = redirect_host;
@@ -32,8 +28,8 @@ let save_rule = async (name: string, redirect_host: string): Promise<string> => 
   return redirect_host;
 };
 
-let get_rule_host = (name: string): string => {
-  let result = rules;
+let get_rule_host = (name: string, name_env: NameEnv): string => {
+  let result = get_env_rules(name_env);
   if (result[name]) {
     let cache = result[name];
     return cache["redirect_host"];
@@ -41,28 +37,29 @@ let get_rule_host = (name: string): string => {
   return "";
 };
 
-let upsert_redirect_url = async (name: string): Promise<string> => {
-  let redirect_host = get_rule_host(name);
+let upsert_redirect_url = async (name: string, name_env: NameEnv): Promise<string> => {
+  let redirect_host = get_rule_host(name, name_env);
   if (redirect_host) {
     console.log(`${name} already has a redirect host: ${redirect_host}`);
     return redirect_host;
   }
   console.log(`${name} does not have a redirect host`);
-  redirect_host = await get_redirect_host(name);
+  redirect_host = await get_redirect_host(name, name_env);
   if (redirect_host) {
     console.log(`found ${name} has a redirect host from resolver: ${redirect_host}`);
-    await save_rule(name, redirect_host);
+    await save_rule(name, redirect_host, name_env);
     console.log(`saved ${name} has a redirect host from resolver: ${redirect_host}`);
   }
   return redirect_host;
 };
 
-chrome.webRequest.onBeforeRequest.addListener(details => {
+
+let urlHandler = (name_env: NameEnv, details: any) => {
   console.log("onBeforeRequest", details);
   let hostname = new URL(details.url).hostname;
   console.log("onBeforeRequest", hostname);
-  if (hostname.endsWith(".icp")) {
-    let redirect_host = get_rule_host(hostname);
+  if (hostname.endsWith(".icp") || hostname.endsWith(".ticp")) {
+    let redirect_host = get_rule_host(hostname, name_env);
     if (redirect_host) {
       // replace the hostname with the redirect host
       // and update schema to https
@@ -71,16 +68,24 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
       redirect_url.protocol = "https:";
       return { redirectUrl: redirect_url.toString() };
     } else {
-      upsert_redirect_url(hostname);
+      let result = upsert_redirect_url(hostname, name_env);
       // redirect to redirect.html with query string
-
       // get redirect.html url from extensions
       let redirect_url_base = chrome.runtime.getURL("redirect.html");
-      let url = `${redirect_url_base}?source=${encodeURIComponent(details.url)}`;
+      let url = `${redirect_url_base}?source=${encodeURIComponent(details.url)}&env=${name_env}`;
       return { redirectUrl: url };
     }
   }
+};
+
+chrome.webRequest.onBeforeRequest.addListener(details => {
+  return urlHandler(NameEnv.MainNet, details);
 }, {
   urls: ["*://*.icp/*"]
 }, ["blocking"]);
 
+chrome.webRequest.onBeforeRequest.addListener(details => {
+  return urlHandler(NameEnv.TestNet, details);
+}, {
+  urls: ["*://*.ticp/*"]
+}, ["blocking"]);
