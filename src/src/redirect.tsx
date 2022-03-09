@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "./skin/popup.css";
-import { get_redirect_host, NameEnv } from "./utils/ic_naming";
+import {get_redirect_host, NameEnv, get_redirect_to} from "./utils/ic_naming";
 
 const Popup = () => {
   const [redirectUrl, setRedirectUrl] = useState<string>("");
@@ -28,13 +28,14 @@ const Popup = () => {
     // get redirect url
     get_redirect_host(hostname, name_env)
       .then((redirect_host) => {
-        source_url.hostname = redirect_host;
-        source_url.protocol = "https:";
-        setRedirectUrl(source_url.href);
+        setLoading(false);
+        let redirect_target = get_redirect_to(source_url.toString(), redirect_host);
+        setRedirectUrl(redirect_target);
         setRedirectFound(true);
-        window.location.href = source_url.href;
+        window.location.href = redirect_target;
       })
       .catch((error) => {
+        setLoading(false);
         console.log(error);
         // get first part of hostname
         let hostname_parts = hostname.split(".");
@@ -43,9 +44,6 @@ const Popup = () => {
         setRedirectUrl(url);
         setRedirectFound(false);
         window.location.href = url;
-      })
-      .finally(() => {
-        setLoading(false);
       });
   }
 
