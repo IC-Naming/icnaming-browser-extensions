@@ -51,7 +51,7 @@ jobs:
           pipenv install
           pipenv run invoke pack-all --version ${{ steps.gitversion.outputs.MajorMinorPatch }}
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           path: |
             src/packages/
