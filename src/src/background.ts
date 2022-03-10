@@ -31,7 +31,7 @@ let save_rule = async (name: string, redirect_host: RedirectInfo, name_env: Name
 let get_redirect_info = (name: string, name_env: NameEnv): RedirectInfo | null => {
   let result = get_env_rules(name_env);
   if (result[name]) {
-    return result[name]["redirect_info"] ;
+    return result[name]["redirect_info"];
   }
   return null;
 };
@@ -72,6 +72,19 @@ let urlHandler = (name_env: NameEnv, details: any) => {
     }
   }
 };
+
+// if you install this extension at first time, it should open https://docs.icnaming.com/UserGuide/BrowserExtensions in new tab
+// using a key in storage as a flag to indicate that this extension is installed
+(() => {
+  chrome.storage.local.get(["installed"], (result) => {
+    console.log("storage.local.get", result);
+    if (!result.installed) {
+      console.info("installed at first time");
+      chrome.storage.local.set({installed: true});
+      chrome.tabs.create({url: "https://docs.icnaming.com/UserGuide/BrowserExtensions"});
+    }
+  });
+})();
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
   return urlHandler(NameEnv.MainNet, details);

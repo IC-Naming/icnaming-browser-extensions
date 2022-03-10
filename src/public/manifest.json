@@ -13,6 +13,7 @@
     "128": "icon.png"
   },
   "permissions": [
+    "tabs",
     "storage",
     "webRequest",
     "webRequestBlocking",
