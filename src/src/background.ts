@@ -58,9 +58,9 @@ let urlHandler = (name_env: NameEnv, details: any) => {
   let hostname = new URL(details.url).hostname;
   console.log("onBeforeRequest", hostname);
   if (hostname.endsWith(".icp") || hostname.endsWith(".ticp")) {
-    let redirect_host = get_redirect_info(hostname, name_env);
-    if (redirect_host) {
-      let redirectTo = get_redirect_to(details.url, redirect_host);
+    let redirect_info = get_redirect_info(hostname, name_env);
+    if (redirect_info) {
+      let redirectTo = get_redirect_to(details.url, redirect_info);
       return {redirectUrl: redirectTo};
     } else {
       let _ = upsert_redirect_info(hostname, name_env);
@@ -87,13 +87,17 @@ let urlHandler = (name_env: NameEnv, details: any) => {
 })();
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
-  return urlHandler(NameEnv.MainNet, details);
+  let result = urlHandler(NameEnv.MainNet, details);
+  console.info(`result: ${JSON.stringify(result)}`);
+  return result;
 }, {
   urls: ["*://*.icp/*"]
 }, ["blocking"]);
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
-  return urlHandler(NameEnv.TestNet, details);
+  let result = urlHandler(NameEnv.TestNet, details);
+  console.info(`result: ${JSON.stringify(result)}`);
+  return result;
 }, {
   urls: ["*://*.ticp/*"]
 }, ["blocking"]);

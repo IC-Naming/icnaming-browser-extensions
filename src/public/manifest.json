@@ -19,5 +19,8 @@
     "webRequestBlocking",
     "*://*.icp/*",
     "*://*.ticp/*"
+  ],
+  "web_accessible_resources": [
+    "redirect.html"
   ]
 }
