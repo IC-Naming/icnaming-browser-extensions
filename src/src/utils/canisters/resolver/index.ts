@@ -1,6 +1,5 @@
 import { actorFactory } from "../actorFactory";
-import { _SERVICE } from "./interface";
-import { idlFactory } from "./did";
+import { idlFactory, _SERVICE } from "@icnaming/resolver_client";
 import { Principal } from "@dfinity/principal";
 
 export type ResolverActor = _SERVICE;
