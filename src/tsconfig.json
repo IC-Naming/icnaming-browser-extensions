@@ -17,6 +17,6 @@
   },
   "include": [
     "node_modules/@icnaming/**/interface.ts",
-    "node_modules/@icnaming/**/**.d.ts"
+    "node_modules/@icnaming/**/**.d.ts",
   ],
 }

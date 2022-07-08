@@ -4,17 +4,17 @@ import {Principal} from "@dfinity/principal";
 const canister_id_key = "canister.icp";
 const url_key = "url";
 
-enum NameEnv {
-  MainNet = "MainNet",
-  TestNet = "TestNet",
+enum SuffixName {
+  TIC = "TIC",
+  IC = "IC",
 }
 
-let get_registrar = (name_env: NameEnv): Principal => {
-  switch (name_env) {
-    case NameEnv.MainNet:
-      return Principal.fromText("c7nxw-iiaaa-aaaam-aacaq-cai");
-    case NameEnv.TestNet:
-      return Principal.fromText("cxnwn-diaaa-aaaag-aabaq-cai");
+let get_registrar = (suffixName: SuffixName): Principal => {
+  switch (suffixName) {
+    case SuffixName.IC:
+      return Principal.fromText("ft6xr-taaaa-aaaam-aafmq-cai");
+    case SuffixName.TIC:
+      return Principal.fromText("ecujo-liaaa-aaaam-aafja-cai");
     default:
       throw new Error("Invalid name_env");
   }
@@ -26,9 +26,9 @@ interface RedirectInfo {
   redirect_host: string;
 }
 
-let get_redirect_host = async (name: string, name_env: NameEnv): Promise<RedirectInfo> => {
+let get_redirect_host = async (name: string, suffixName: SuffixName): Promise<RedirectInfo> => {
   let serviceApi = new ServiceApi();
-  let resolver = await serviceApi.getResolverOfName(name, get_registrar(name_env));
+  let resolver = await serviceApi.getResolverOfName(name, get_registrar(suffixName));
   if (resolver) {
     let values = await serviceApi.getRecordsOfName(name, resolver);
     if (values) {
@@ -64,4 +64,11 @@ const get_redirect_to = (url: string, redirect_info: RedirectInfo): string => {
   return `https://app.icnaming.com/search/${redirect_url.hostname}`;
 }
 
-export {canister_id_key, get_redirect_host, RedirectInfo, get_redirect_to, NameEnv};
+const get_suffix_name = (url: string): SuffixName => {
+    if (url.endsWith(".icp") || url.endsWith(".ticp")) {
+        return SuffixName.IC;
+    }
+    return SuffixName.TIC;
+}
+
+export {canister_id_key, get_redirect_host, RedirectInfo, get_redirect_to, SuffixName, get_suffix_name};

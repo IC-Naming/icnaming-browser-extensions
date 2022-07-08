@@ -34,8 +34,7 @@ module.exports = {
                 use: {
                     loader: "ts-loader",
                     options: { allowTsInNodeModules: true }
-                }
-                // exclude: /node_modules/,
+                },
             },
         ],
     },
