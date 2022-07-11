@@ -2,11 +2,11 @@ name: Release
 
 on:
   release:
-    types: [published]
+    types: [ published ]
   push:
     branches:
       - "publish"
-      
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -34,7 +34,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.9.13
         with:
           useConfigFile: true
-      - name: Use Node.js 
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16

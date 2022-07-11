@@ -33,7 +33,7 @@ module.exports = {
                 test: /\.(ts|tsx|jsx)$/,
                 use: {
                     loader: "ts-loader",
-                    options: { allowTsInNodeModules: true }
+                    options: {allowTsInNodeModules: true}
                 },
             },
         ],

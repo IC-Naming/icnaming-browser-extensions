@@ -1,28 +1,32 @@
-[{
-  "id": 3,
-  "priority": 3,
-  "action": {
-    "type": "redirect",
-    "redirect": {
-      "transform": {
-        "host": "www.baidu.com"
+[
+  {
+    "id": 3,
+    "priority": 3,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "host": "www.baidu.com"
+        }
       }
+    },
+    "condition": {
+      "regexFilter": "http(s)://.*\\.icp/",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
-  },
-  "condition": {
-    "regexFilter": "http(s)://.*\\.icp/",
-    "resourceTypes": [
-      "main_frame"
-    ]
   }
-}]
+]
 
 
 // add to manifest.json
 "declarative_net_request" : {
-"rule_resources" : [{
+"rule_resources": [
+{
 "id": "ruleset_1",
 "enabled": true,
 "path": "rules_1.json"
-}]
+}
+]
 },
