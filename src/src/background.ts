@@ -57,7 +57,7 @@ let urlHandler = (suffixName: SuffixName, details: any) => {
     console.log("onBeforeRequest", details);
     let hostname = new URL(details.url).hostname;
     console.log("onBeforeRequest", hostname);
-    if (hostname.endsWith(".icp") || hostname.endsWith(".ticp") || hostname.endsWith(".ic") || hostname.endsWith(".tic")) {
+    if (hostname.toLowerCase().endsWith(suffixName.toLowerCase())) {
         let redirect_info = get_redirect_info(hostname, suffixName);
         if (redirect_info) {
             let redirectTo = get_redirect_to(details.url, redirect_info);
