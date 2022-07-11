@@ -27,5 +27,6 @@ jobs:
         node-version: 16
     - run: |
         cd src
+        ./sh_setup_dev.sh
         npm install
         npm run build --if-present
