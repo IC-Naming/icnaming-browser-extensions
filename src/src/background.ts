@@ -91,11 +91,27 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
   console.info(`result: ${JSON.stringify(result)}`);
   return result;
 }, {
+  urls: ["*://*.ic/*"]
+}, ["blocking"]);
+
+chrome.webRequest.onBeforeRequest.addListener(details => {
+  let result = urlHandler(SuffixName.ICP, details);
+  console.info(`result: ${JSON.stringify(result)}`);
+  return result;
+}, {
   urls: ["*://*.icp/*"]
 }, ["blocking"]);
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
   let result = urlHandler(SuffixName.TIC, details);
+  console.info(`result: ${JSON.stringify(result)}`);
+  return result;
+}, {
+  urls: ["*://*.tic/*"]
+}, ["blocking"]);
+
+chrome.webRequest.onBeforeRequest.addListener(details => {
+  let result = urlHandler(SuffixName.TICP, details);
   console.info(`result: ${JSON.stringify(result)}`);
   return result;
 }, {

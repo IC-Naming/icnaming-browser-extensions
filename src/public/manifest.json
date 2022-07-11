@@ -17,7 +17,9 @@
     "storage",
     "webRequest",
     "webRequestBlocking",
+    "*://*.ic/*",
     "*://*.icp/*",
+    "*://*.tic/*",
     "*://*.ticp/*"
   ],
   "web_accessible_resources": [
