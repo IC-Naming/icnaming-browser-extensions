@@ -13,6 +13,10 @@
     "jsx": "react",
     "typeRoots": [
       "node_modules/@types"
-    ]
-  }
+    ],
+  },
+  "include": [
+    "node_modules/@icnaming/**/interface.ts",
+    "node_modules/@icnaming/**/**.d.ts",
+  ],
 }

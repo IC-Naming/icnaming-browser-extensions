@@ -1,6 +1,5 @@
 import { actorFactory } from "../actorFactory";
-import { _SERVICE } from "./interface";
-import { idlFactory } from "./did";
+import { _SERVICE,idlFactory } from "@icnaming/registry_client";
 import { Principal } from "@dfinity/principal";
 
 export type RegistryActor = _SERVICE;

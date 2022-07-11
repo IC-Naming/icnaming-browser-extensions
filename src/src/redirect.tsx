@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import "./skin/popup.css";
-import {get_redirect_host, NameEnv, get_redirect_to} from "./utils/ic_naming";
+import {get_redirect_host, get_redirect_to, get_suffix_name, SuffixName} from "./utils/ic_naming";
 
 const Popup = () => {
   const [redirectUrl, setRedirectUrl] = useState<string>("");
@@ -21,12 +21,12 @@ const Popup = () => {
     let source_url = new URL(source);
     let hostname = source_url.hostname;
     // parse name_env to NameEnv
-    let name_env = NameEnv.MainNet;
-    if (env) {
-      name_env = (NameEnv)[env];
-    }
+    // let name_env = NameEnv.MainNet;
+    // if (env) {
+    //   name_env = (NameEnv)[env];
+    // }
     // get redirect url
-    get_redirect_host(hostname, name_env)
+    get_redirect_host(hostname, get_suffix_name(hostname))
       .then((redirect_host) => {
         setLoading(false);
         let redirect_target = get_redirect_to(source_url.toString(), redirect_host);
