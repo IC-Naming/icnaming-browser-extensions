@@ -12,9 +12,9 @@ enum SuffixName {
 let get_registrar = (suffixName: SuffixName): Principal => {
   switch (suffixName) {
     case SuffixName.IC:
-      return Principal.fromText("ft6xr-taaaa-aaaam-aafmq-cai");
+      return Principal.fromText("f542z-iqaaa-aaaam-aafnq-cai");
     case SuffixName.TIC:
-      return Principal.fromText("ecujo-liaaa-aaaam-aafja-cai");
+      return Principal.fromText("eqs6x-hyaaa-aaaam-aafka-cai");
     default:
       throw new Error("Invalid name_env");
   }
