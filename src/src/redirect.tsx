@@ -20,11 +20,6 @@ const Popup = () => {
     // get hostname from uri
     let source_url = new URL(source);
     let hostname = source_url.hostname;
-    // parse name_env to NameEnv
-    // let name_env = NameEnv.MainNet;
-    // if (env) {
-    //   name_env = (NameEnv)[env];
-    // }
     // get redirect url
     get_redirect_host(hostname, get_suffix_name(hostname))
       .then((redirect_host) => {
