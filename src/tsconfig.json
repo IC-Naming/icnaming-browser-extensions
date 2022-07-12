@@ -6,6 +6,8 @@
     "moduleResolution": "node",
     "target": "es6",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
     "sourceMap": true,
     "rootDir": "src",
     "outDir": "dist/js",
@@ -14,5 +16,9 @@
     "typeRoots": [
       "node_modules/@types"
     ]
-  }
+  },
+  "include": [
+    "node_modules/@icnaming/**/interface.ts",
+    "node_modules/@icnaming/**/**.d.ts"
+  ]
 }

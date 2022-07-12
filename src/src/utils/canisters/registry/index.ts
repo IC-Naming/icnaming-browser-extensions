@@ -1,13 +1,12 @@
-import { actorFactory } from "../actorFactory";
-import { _SERVICE } from "./interface";
-import { idlFactory } from "./did";
-import { Principal } from "@dfinity/principal";
+import {actorFactory} from "../actorFactory";
+import {_SERVICE, idlFactory} from "@icnaming/registry_client";
+import {Principal} from "@dfinity/principal";
 
 export type RegistryActor = _SERVICE;
 
 export const createRegistryQueryActor = (registrarId: Principal) =>
-  actorFactory.createActorWithAnonymousIdentity<RegistryActor>(
-    idlFactory,
-    registrarId
-  );
+    actorFactory.createActorWithAnonymousIdentity<RegistryActor>(
+        idlFactory,
+        registrarId
+    );
 
