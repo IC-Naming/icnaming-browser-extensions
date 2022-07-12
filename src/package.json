@@ -49,7 +49,7 @@
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.5.3",
-    "glob": "7.2.0",
+    "glob": "8.0.3",
     "jest": "27.5.1",
     "prettier": "^2.7.1",
     "rimraf": "3.0.2",
