@@ -10,7 +10,7 @@ class ActorFactory {
         return this._instance;
     }
 
-    _isAuthenticated: boolean = false;
+    _isAuthenticated = false;
 
     createActor<T>(
         canisterDid: any,

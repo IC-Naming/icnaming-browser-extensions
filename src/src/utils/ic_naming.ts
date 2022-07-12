@@ -11,7 +11,7 @@ enum SuffixName {
     ICP = "ICP",
 }
 
-let get_registrar = (suffixName: SuffixName): Principal => {
+const get_registrar = (suffixName: SuffixName): Principal => {
     switch (suffixName) {
         case SuffixName.IC:
             return Principal.fromText("f542z-iqaaa-aaaam-aafnq-cai");
@@ -32,15 +32,15 @@ interface RedirectInfo {
     redirect_host: string;
 }
 
-let get_redirect_host = async (name: string, suffixName: SuffixName): Promise<RedirectInfo> => {
-    let serviceApi = new ServiceApi();
-    let resolver = await serviceApi.getResolverOfName(name, get_registrar(suffixName));
+const get_redirect_host = async (name: string, suffixName: SuffixName): Promise<RedirectInfo> => {
+    const serviceApi = new ServiceApi();
+    const resolver = await serviceApi.getResolverOfName(name, get_registrar(suffixName));
     if (resolver) {
-        let values = await serviceApi.getRecordsOfName(name, resolver);
+        const values = await serviceApi.getRecordsOfName(name, resolver);
         if (values) {
             console.log(values);
-            let canister_id = values.find((value) => value[0] === canister_id_key);
-            let url = values.find((value) => value[0] === url_key);
+            const canister_id = values.find((value) => value[0] === canister_id_key);
+            const url = values.find((value) => value[0] === url_key);
             return {
                 name: name,
                 url: url ? url[1] : "",
@@ -56,7 +56,7 @@ let get_redirect_host = async (name: string, suffixName: SuffixName): Promise<Re
 };
 
 const get_redirect_to = (url: string, redirect_info: RedirectInfo): string => {
-    let redirect_url = new URL(url);
+    const redirect_url = new URL(url);
     if (redirect_info.redirect_host) {
         // replace the hostname with the redirect host
         // and update schema to https

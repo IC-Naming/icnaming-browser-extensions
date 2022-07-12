@@ -6,6 +6,8 @@
     "moduleResolution": "node",
     "target": "es6",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
     "sourceMap": true,
     "rootDir": "src",
     "outDir": "dist/js",

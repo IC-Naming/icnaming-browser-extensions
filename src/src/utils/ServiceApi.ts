@@ -1,7 +1,6 @@
 import {Principal} from "@dfinity/principal";
 import {
     createRegistryQueryActor,
-    RegistryActor
 } from "./canisters/registry";
 import {
     createResolverQueryActorById,
@@ -19,8 +18,6 @@ export interface NameDetails {
 
 export default class ServiceApi {
 
-    public constructor() {
-    }
 
     /* Registrar */
 

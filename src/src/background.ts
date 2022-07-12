@@ -2,8 +2,8 @@ import {get_redirect_host, get_redirect_to, RedirectInfo, SuffixName} from "./ut
 
 const rule_id_start = 1000;
 let current_rule_id = rule_id_start;
-let env_rules = {};
-let get_env_rules = (suffixName: SuffixName) => {
+const env_rules = {};
+const get_env_rules = (suffixName: SuffixName) => {
     if (!env_rules[suffixName]) {
         env_rules[suffixName] = {};
     }
@@ -11,13 +11,13 @@ let get_env_rules = (suffixName: SuffixName) => {
 };
 
 
-let save_rule = async (name: string, redirect_host: RedirectInfo, suffixName: SuffixName): Promise<RedirectInfo> => {
-    let result = get_env_rules(suffixName);
+const save_rule = async (name: string, redirect_host: RedirectInfo, suffixName: SuffixName): Promise<RedirectInfo> => {
+    const result = get_env_rules(suffixName);
     if (result[name]) {
-        let cache = result[name];
+        const cache = result[name];
         cache["redirect_info"] = redirect_host;
     } else {
-        let id = current_rule_id++;
+        const id = current_rule_id++;
         result[name] = {
             "redirect_info": redirect_host,
             "rule_id": id
@@ -28,15 +28,15 @@ let save_rule = async (name: string, redirect_host: RedirectInfo, suffixName: Su
     return redirect_host;
 };
 
-let get_redirect_info = (name: string, suffixName: SuffixName): RedirectInfo | null => {
-    let result = get_env_rules(suffixName);
+const get_redirect_info = (name: string, suffixName: SuffixName): RedirectInfo | null => {
+    const result = get_env_rules(suffixName);
     if (result[name]) {
         return result[name]["redirect_info"];
     }
     return null;
 };
 
-let upsert_redirect_info = async (name: string, suffixName: SuffixName): Promise<RedirectInfo> => {
+const upsert_redirect_info = async (name: string, suffixName: SuffixName): Promise<RedirectInfo> => {
     let redirect_host = get_redirect_info(name, suffixName);
     if (redirect_host) {
         console.log(`${name} already has a redirect host: ${redirect_host}`);
@@ -53,21 +53,21 @@ let upsert_redirect_info = async (name: string, suffixName: SuffixName): Promise
 };
 
 
-let urlHandler = (suffixName: SuffixName, details: any) => {
+const urlHandler = (suffixName: SuffixName, details: any) => {
     console.log("onBeforeRequest", details);
-    let hostname = new URL(details.url).hostname;
+    const hostname = new URL(details.url).hostname;
     console.log("onBeforeRequest", hostname);
     if (hostname.toLowerCase().endsWith(suffixName.toLowerCase())) {
-        let redirect_info = get_redirect_info(hostname, suffixName);
+        const redirect_info = get_redirect_info(hostname, suffixName);
         if (redirect_info) {
-            let redirectTo = get_redirect_to(details.url, redirect_info);
+            const redirectTo = get_redirect_to(details.url, redirect_info);
             return {redirectUrl: redirectTo};
         } else {
-            let _ = upsert_redirect_info(hostname, suffixName);
+            const _ = upsert_redirect_info(hostname, suffixName);
             // redirect to redirect.html with query string
             // get redirect.html url from extensions
-            let redirect_url_base = chrome.runtime.getURL("redirect.html");
-            let url = `${redirect_url_base}?source=${encodeURIComponent(details.url)}&env=${suffixName}`;
+            const redirect_url_base = chrome.runtime.getURL("redirect.html");
+            const url = `${redirect_url_base}?source=${encodeURIComponent(details.url)}&env=${suffixName}`;
             return {redirectUrl: url};
         }
     }
@@ -87,7 +87,7 @@ let urlHandler = (suffixName: SuffixName, details: any) => {
 })();
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
-    let result = urlHandler(SuffixName.IC, details);
+    const result = urlHandler(SuffixName.IC, details);
     console.info(`result: ${JSON.stringify(result)}`);
     return result;
 }, {
@@ -95,7 +95,7 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
 }, ["blocking"]);
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
-    let result = urlHandler(SuffixName.ICP, details);
+    const result = urlHandler(SuffixName.ICP, details);
     console.info(`result: ${JSON.stringify(result)}`);
     return result;
 }, {
@@ -103,7 +103,7 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
 }, ["blocking"]);
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
-    let result = urlHandler(SuffixName.TIC, details);
+    const result = urlHandler(SuffixName.TIC, details);
     console.info(`result: ${JSON.stringify(result)}`);
     return result;
 }, {
@@ -111,7 +111,7 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
 }, ["blocking"]);
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
-    let result = urlHandler(SuffixName.TICP, details);
+    const result = urlHandler(SuffixName.TICP, details);
     console.info(`result: ${JSON.stringify(result)}`);
     return result;
 }, {
