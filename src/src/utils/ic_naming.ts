@@ -4,6 +4,8 @@ import {Principal} from "@dfinity/principal";
 const canister_id_key = "canister.icp";
 const url_key = "url";
 
+const default_redirect_search_address = "https://app.icnaming.com/#/search/"
+
 enum SuffixName {
     TIC = "TIC",
     IC = "IC",
@@ -67,7 +69,7 @@ const get_redirect_to = (url: string, redirect_info: RedirectInfo): string => {
     if (redirect_info.url) {
         return redirect_info.url;
     }
-    return `https://app.icnaming.com/search/${redirect_url.hostname}`;
+    return `${default_redirect_search_address}${redirect_url.hostname}`;
 }
 
 const get_suffix_name = (url: string): SuffixName => {
@@ -77,4 +79,4 @@ const get_suffix_name = (url: string): SuffixName => {
     return SuffixName.TIC;
 }
 
-export {canister_id_key, get_redirect_host, RedirectInfo, get_redirect_to, SuffixName, get_suffix_name};
+export {canister_id_key, get_redirect_host, RedirectInfo, get_redirect_to, SuffixName, get_suffix_name,default_redirect_search_address};
