@@ -71,10 +71,19 @@ const get_redirect_to = (url: string, redirect_info: RedirectInfo): string => {
 }
 
 const get_suffix_name = (url: string): SuffixName => {
-    if (url.endsWith(".icp") || url.endsWith(".ticp")) {
+    if (url.endsWith(".tic")) {
+        return SuffixName.TIC;
+    }
+    if (url.endsWith(".ic")) {
         return SuffixName.IC;
     }
-    return SuffixName.TIC;
+    if (url.endsWith(".ticp")) {
+        return SuffixName.TICP;
+    }
+    if (url.endsWith(".icp")) {
+        return SuffixName.ICP;
+    }
+    return SuffixName.IC;
 }
 
 export {canister_id_key, get_redirect_host, RedirectInfo, get_redirect_to, SuffixName, get_suffix_name};
