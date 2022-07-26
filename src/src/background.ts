@@ -73,19 +73,6 @@ const urlHandler = (suffixName: SuffixName, details: any) => {
     }
 };
 
-// if you install this extension at first time, it should open https://docs.icnaming.com/UserGuide/BrowserExtensions in new tab
-// using a key in storage as a flag to indicate that this extension is installed
-(() => {
-    chrome.storage.local.get(["installed"], (result) => {
-        console.log("storage.local.get", result);
-        if (!result.installed) {
-            console.info("installed at first time");
-            chrome.storage.local.set({installed: true});
-            chrome.tabs.create({url: "https://docs.icnaming.com/UserGuide/BrowserExtensions"});
-        }
-    });
-})();
-
 chrome.webRequest.onBeforeRequest.addListener(details => {
     const result = urlHandler(SuffixName.IC, details);
     console.info(`result: ${JSON.stringify(result)}`);
