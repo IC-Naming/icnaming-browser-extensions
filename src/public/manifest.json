@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "IC naming extensions",
   "description": "Extensions to help you visit icnaming from you browser",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "options_page": "options.html",
   "background": {
     "page": "background.html",
