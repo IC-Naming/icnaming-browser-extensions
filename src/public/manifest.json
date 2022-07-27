@@ -3,6 +3,7 @@
   "name": "IC naming extensions",
   "description": "Extensions to help you visit icnaming from you browser",
   "version": "2.0.2",
+  "options_page": "options.html",
   "background": {
     "page": "background.html",
     "persistent": true
