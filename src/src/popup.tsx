@@ -25,7 +25,7 @@ const Popup = () => {
 	        	<strong>The gate of decentralized web</strong>
 	        	<div style={fontStyle}>This extension opens websites on the blockchain</div>
 	        	<div style={{textAlign: "right",marginTop: "1rem"}}>
-		            <a id="redirectDom" style={fontStyle} href="https://app.icnaming.com/" target="_blank">Register a decentralized name of your own</a>
+		            <a style={fontStyle} href="https://app.icnaming.com/" target="_blank">Register a decentralized name of your own</a>
 		        </div>
 	        </div>
 		</div>
