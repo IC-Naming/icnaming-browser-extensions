@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-const Options = () => {
+const Popup = () => {
     const wrapStyle = {
         width:"425px",
-        BoxSizing: "border-box", 
+        BoxSizing: "border-box",
         margin:"0 auto",
         padding: "1rem"
     }
@@ -25,17 +25,21 @@ const Options = () => {
 	        	<strong>The gate of decentralized web</strong>
 	        	<div style={fontStyle}>This extension opens websites on the blockchain</div>
 	        	<div style={{textAlign: "right",marginTop: "1rem"}}>
-		            <a style={fontStyle} href="https://app.icnaming.com/">Register a decentralized name of your own</a>
+		            <a id="redirectDom" style={fontStyle} href="https://app.icnaming.com/" onClick={
+                        () => {
+                            chrome.tabs.create({url: "https://icnaming.com"});
+                        }
+                    } >Register a decentralized name of your own</a>
 		        </div>
 	        </div>
 		</div>
     </div>
     );
 };
-
 ReactDOM.render(
     <React.StrictMode>
-        <Options/>
+        <Popup/>
     </React.StrictMode>,
-    document.getElementById("root")
+    document.getElementById("root"),
 );
+
