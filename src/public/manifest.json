@@ -3,9 +3,9 @@
   "name": "IC naming extensions",
   "description": "Extensions to help you visit icnaming from you browser",
   "version": "2.0.4",
-   "browser_action": {
+  "browser_action": {
     "default_icon": "icon.png",
-     "default_popup": "popup.html"
+    "default_popup": "popup.html"
   },
   "background": {
     "page": "background.html",
