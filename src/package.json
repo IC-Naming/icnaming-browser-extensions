@@ -32,16 +32,16 @@
     "dotenv": "^16.0.0",
     "dotenv-webpack": "^7.0.3",
     "js-sha256": "0.9.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
     "@deland-labs/ic-bin-tools": "^0.1.1",
     "@deland-labs/ic-dev-kit": "^0.6.8",
     "@types/chrome": "0.0.180",
     "@types/jest": "27.4.1",
-    "@types/react": "17.0.45",
-    "@types/react-dom": "17.0.16",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
     "copy-webpack-plugin": "10.2.4",
